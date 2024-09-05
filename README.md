@@ -1,51 +1,29 @@
-# React + TypeScript + Vite
+# Module augmentation with: TypeScript + Vite + Material UI (MUI v5)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An example of module augmentation working as a library of components with mui v5. 
 
-Currently, two official plugins are available:
+Use this example with:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- https://github.com/gerardparareda/module-augmentation-library-vite-mui
 
-## Expanding the ESLint configuration
+## How to use
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+1. Download the project
+2. Install `npm install`
+3. Install the components library `npm i ../components-library`
+4. Build and preview the project `npx vite build && npx vite preview` or run it `npx vite dev`.
 
-- Configure the top-level `parserOptions` property like this:
+## How does it work
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+For the module augmentation to work, you need to "import" (not in the module `import {Whatever} from ... ` sense, but include) the typings somewhere.
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+What I found I liked the most, was creating a `globals.d.ts` file (is can be named in any way, since it looks like ViteJS loads all `.d.ts` files.). Inside this file, load the typings containing the module augmentation:
 
 ```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+import type {} from 'components-library/dist/types/augmentations.d.ts';
 ```
-# module-augmentation-app-vite-mui
+^ This could change if it is a published npm package.
+
+You will now have your library new module augmented typings everywhere in this application.
+
+You can also import these typings in your application entry point, `index.ts` or `main.ts`.
